@@ -1,0 +1,53 @@
+header {
+  color: rgb(231, 231, 231);
+  display: flex;
+  width: 100%;
+  background-color: rgb(65, 65, 65) !important;
+  position: absolute;
+  top: 0px;
+}
+
+.logo {
+  font-family: 'Lobster', cursive;
+  font-size: 2rem;
+}
+
+.menu {
+  display: flex;
+  margin-left: auto;
+  align-items: center;
+  background-color: rgb(65, 65, 65) !important;
+  &__item {
+    height: 2.7rem;
+    border-radius: 3px;
+    padding: 0 1.5rem;
+  }
+}
+
+.hero {
+  height: 100vh;
+  background-image: linear-gradient(
+      to right bottom,
+      rgba(#181818, 0.6),
+      rgba(#181818, 0.6)
+    ),
+    url(../assets/tt-bg-image.jpg);
+  &__ctaButton {
+    position: absolute;
+    top: 47.5%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 3.2rem;
+    padding: 0.7rem 2rem;
+    font-size: 1.2rem;
+  }
+}
+
+.footer {
+  position: absolute;
+  bottom: 0px;
+  width: 100%;
+  font-size: 1.1rem !important;
+  color: rgb(223, 223, 223) !important;
+  background-color: rgba(0, 0, 0, 0.021) !important;
+}
