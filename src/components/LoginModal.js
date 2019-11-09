@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Modal, Form, Icon, Input, Button, Checkbox } from 'antd';
+import axios from 'axios';
 
 class LoginModal extends Component {
     state = {
@@ -9,10 +10,15 @@ class LoginModal extends Component {
     };
 
     handleSubmitForLogin = e => {
+        console.log('handleSubmitForLogin t')
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
             if (!err) {
                 console.log('Received values of form: ', values);
+                axios.post('http://localhost:8080/login', {
+                    "username": 'newton',
+                    "password": values.password,
+                })
             }
             this.props.hideLoginModal(false);
         });
@@ -60,18 +66,18 @@ class LoginModal extends Component {
                 >
                     <Form onSubmit={this.handleSubmitForLogin} className="login-form">
                         <Form.Item>
-                            {getFieldDecorator('email', {
-                                rules: [{ type: "email", required: true, message: 'Please input your Email address!' }],
+                            {getFieldDecorator('username', {
+                                rules: [{ required: true, message: 'Please enter your Username.' }],
                             })(
                                 <Input
-                                    prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                                    placeholder="Email address"
+                                    prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                                    placeholder="Username"
                                 />,
                             )}
                         </Form.Item>
                         <Form.Item>
                             {getFieldDecorator('password', {
-                                rules: [{ required: true, message: 'Please input your Password!' }],
+                                rules: [{ required: true, message: 'Please input your Password.' }],
                             })(
                                 <Input
                                     prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}

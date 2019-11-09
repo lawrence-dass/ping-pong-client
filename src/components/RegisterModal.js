@@ -4,7 +4,7 @@ import axios from 'axios';
 
 class RegisterModal extends Component {
     state = {
-        name: '',
+        username: '',
         email: '',
         password: '',
     };
@@ -15,7 +15,7 @@ class RegisterModal extends Component {
             if (!err) {
                 console.log('Received values of form: ', values);
                 axios.post('http://localhost:8080/register', {
-                    "userName": values.name,
+                    "username": values.name,
                     "email": values.email,
                     "password": values.password,
                 })
