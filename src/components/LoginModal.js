@@ -56,6 +56,7 @@ class LoginModal extends Component {
                     title="Please login to access your account."
                     onCancel={this.handleCancel}
                     footer={null}
+                    style={{ top: 200 }}
                 >
                     <Form onSubmit={this.handleSubmitForLogin} className="login-form">
                         <Form.Item>

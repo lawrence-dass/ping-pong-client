@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Layout, Menu, Button } from 'antd';
+import axios from 'axios';
 
 import './Content.scss'
 
@@ -16,6 +17,12 @@ export default class Content extends Component {
         registerModalVisible: false,
         loginModalVisible: false
     };
+
+    componentDidMount() {
+        axios.get('http://localhost:8080/').then((res) => {
+            console.log(res);
+        })
+    }
 
     showRegisterModal = () => {
         this.setState({

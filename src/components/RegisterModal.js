@@ -62,6 +62,7 @@ class RegisterModal extends Component {
                     title="Please fill up below detail to register with us."
                     onCancel={this.handleCancel}
                     footer={null}
+                    style={{ top: 200 }}
                 >
                     <Form onSubmit={this.handleSubmitForRegister} className="login-form">
                         <Form.Item>
