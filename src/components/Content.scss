@@ -51,3 +51,19 @@ header {
   color: rgb(223, 223, 223) !important;
   background-color: rgba(0, 0, 0, 0.021) !important;
 }
+
+// register forms
+.login-form {
+  width: 90%;
+  margin: 0 auto;
+}
+
+.register-form-button,
+.login-form-button {
+  width: 100%;
+}
+
+.ant-modal-content {
+  width: 80%;
+  margin: 0 auto !important;
+}

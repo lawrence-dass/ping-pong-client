@@ -1,6 +1,11 @@
 import React, { Component } from 'react';
-import { Modal, Form, Icon, Input, Button, Checkbox } from 'antd';
+import { Modal, Form, Icon, Input, Button } from 'antd';
 import axios from 'axios';
+
+// to show field error and disable button
+function hasErrors(fieldsError) {
+    return Object.keys(fieldsError).some(field => fieldsError[field]);
+}
 
 class LoginModal extends Component {
     state = {
@@ -8,6 +13,11 @@ class LoginModal extends Component {
         email: '',
         password: '',
     };
+
+    componentDidMount() {
+        // To disabled submit button at the beginning.
+        this.props.form.validateFields();
+    }
 
     handleSubmitForLogin = e => {
         console.log('handleSubmitForLogin t')
@@ -20,6 +30,7 @@ class LoginModal extends Component {
                     "password": values.password,
                 })
             }
+            this.props.form.resetFields();
             this.props.hideLoginModal(false);
         });
     };
@@ -48,13 +59,22 @@ class LoginModal extends Component {
     }
 
     handleCancel = () => {
+        this.setState(() => {
+            return {
+                username: '',
+                password: '',
+            };
+        })
+        this.props.form.resetFields();
         this.props.hideLoginModal(false);
     };
 
     render() {
         console.log(this.props)
         const { loginModalVisible } = this.props;
-        const { getFieldDecorator } = this.props.form;
+        const { getFieldDecorator, getFieldsError, isFieldTouched, getFieldError } = this.props.form;
+        const usernameError = isFieldTouched('name') && getFieldError('name');
+        const passwordError = isFieldTouched('password') && getFieldError('password');
         return (
             <div>
                 <Modal
@@ -65,7 +85,7 @@ class LoginModal extends Component {
                     style={{ top: 200 }}
                 >
                     <Form onSubmit={this.handleSubmitForLogin} className="login-form">
-                        <Form.Item>
+                        <Form.Item validateStatus={usernameError ? 'error' : ''} help={usernameError || ''}>
                             {getFieldDecorator('username', {
                                 rules: [{ required: true, message: 'Please enter your Username.' }],
                             })(
@@ -75,7 +95,7 @@ class LoginModal extends Component {
                                 />,
                             )}
                         </Form.Item>
-                        <Form.Item>
+                        <Form.Item validateStatus={passwordError ? 'error' : ''} help={passwordError || ''}>
                             {getFieldDecorator('password', {
                                 rules: [{ required: true, message: 'Please input your Password.' }],
                             })(
@@ -86,16 +106,10 @@ class LoginModal extends Component {
                                 />,
                             )}
                         </Form.Item>
-                        <Form.Item>
-                            {getFieldDecorator('remember', {
-                                valuePropName: 'checked',
-                                initialValue: true,
-                            })(<Checkbox>Remember me</Checkbox>)}
-                            <Button type="primary" htmlType="submit" className="login-form-button">
-                                Log in
+
+                        <Button type="primary" htmlType="submit" disabled={hasErrors(getFieldsError())} className="login-form-button">
+                            Log in
                             </Button>
-                            Or <span>register now!</span>
-                        </Form.Item>
                     </Form>
                 </Modal>
             </div>
