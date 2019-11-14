@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { Layout, Menu, Button } from 'antd';
-import axios from 'axios';
+import { Layout, Button } from 'antd';
 
 import './Content.scss'
 
@@ -10,19 +9,13 @@ import RegisterModal from './RegisterModal';
 import LoginModal from './LoginModal';
 
 
-const { Header, Footer } = Layout;
+const { Footer } = Layout;
 
 export default class Content extends Component {
     state = {
         registerModalVisible: false,
         loginModalVisible: false
     };
-
-    componentDidMount() {
-        axios.get('http://localhost:8080/').then((res) => {
-            console.log(res);
-        })
-    }
 
     showRegisterModal = () => {
         this.setState({
@@ -55,17 +48,6 @@ export default class Content extends Component {
     render() {
         return (
             <Layout>
-                <Header>
-                    <div className="logo" >Ping Pong</div>
-                    <Menu className="menu"
-                        theme="dark"
-                        mode="horizontal"
-                        defaultSelectedKeys={['login']}
-                    >
-                        <Menu.Item className="menu__item" key="register" onClick={this.showRegisterModal}>Register</Menu.Item>
-                        <Menu.Item className="menu__item" key="login" onClick={this.showLoginModal}>Login</Menu.Item>
-                    </Menu>
-                </Header>
                 <section className="hero">
                     <Button className="hero__ctaButton" type="primary" onClick={this.showLoginModal}> Book Table Now!</Button>
                 </section>

@@ -19,22 +19,30 @@ class RegisterModal extends Component {
         this.props.form.validateFields();
     }
 
+
+    registerSuccess() {
+        Modal.success({
+            content: 'You successfully registered, please Login in continue.',
+        });
+    }
+
     handleSubmitForRegister = e => {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
             if (!err) {
                 console.log('Received values of form: ', values);
                 axios.post('http://localhost:8080/register', {
-                    "username": values.name,
+                    "name": values.name,
                     "email": values.email,
                     "password": values.password,
                 })
                     .then(res => {
                         console.log(res);
+                        this.registerSuccess();
                     })
                     .catch(err => {
                         if (err.response) {
-                            console.log(err.response)
+
                             this.setState(() => {
                                 return { errors: [...err.response.data] }
                             })
@@ -85,7 +93,6 @@ class RegisterModal extends Component {
 
 
     render() {
-        console.log(this.props)
         const { registerModalVisible } = this.props;
         const { getFieldDecorator, getFieldsError, isFieldTouched, getFieldError } = this.props.form;
         const usernameError = isFieldTouched('name') && getFieldError('name');
@@ -103,7 +110,7 @@ class RegisterModal extends Component {
                     <Form onSubmit={this.handleSubmitForRegister} className="login-form">
                         <Form.Item validateStatus={usernameError ? 'error' : ''} help={usernameError || ''}>
                             {getFieldDecorator('name', {
-                                rules: [{ required: true, message: 'Please enter your name.' }, { min: 4, message: 'Username must of atleast 4 characters.' }],
+                                rules: [{ required: true, message: 'Please enter your name.' }, { min: 4, max: 10, message: 'Username must between 4 to 10 characters.' }],
                             })(
                                 <Input
                                     prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
