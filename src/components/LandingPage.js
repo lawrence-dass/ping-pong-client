@@ -1,17 +1,14 @@
 import React, { Component } from 'react';
 import { Layout, Button } from 'antd';
 
-import './Content.scss'
-
-
 // internal imports
 import RegisterModal from './RegisterModal';
 import LoginModal from './LoginModal';
-
+import '../styles/LandingPage.scss';
 
 const { Footer } = Layout;
 
-export default class Content extends Component {
+export default class LandingPage extends Component {
     state = {
         registerModalVisible: false,
         loginModalVisible: false

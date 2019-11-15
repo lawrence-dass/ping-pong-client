@@ -1,5 +1,27 @@
-.App {
-  text-align: center;
+header {
+  color: rgb(231, 231, 231);
+  display: flex;
+  width: 100%;
+  background-color: rgb(65, 65, 65) !important;
+  position: absolute;
+  top: 0px;
+}
+
+.logo {
+  font-family: 'Lobster', cursive;
+  font-size: 2rem;
+}
+
+.menu {
+  display: flex;
+  margin-left: auto;
+  align-items: center;
+  background-color: rgb(65, 65, 65) !important;
+  &__item {
+    height: 2.7rem;
+    border-radius: 3px;
+    padding: 0 1.5rem;
+  }
 }
 
 .hero {
@@ -9,7 +31,7 @@
       rgba(#181818, 0.6),
       rgba(#181818, 0.6)
     ),
-    url(./assets/landing-bg-image.jpg);
+    url(../assets/landing-bg-image.jpg);
   &__ctaButton {
     position: absolute;
     top: 47.5%;

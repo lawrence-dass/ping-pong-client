@@ -41,7 +41,7 @@ class BookingModal extends Component {
 
             })
 
-        if (this.state.allBookings != []) {
+        if (this.state.allBookings !== []) {
 
         }
 
@@ -120,7 +120,7 @@ class BookingModal extends Component {
                 }
             });
             console.log('availability', availability);
-            const avaiablityArray = availability != {} && Object.values(availability)[0];
+            const avaiablityArray = availability !== {} && Object.values(availability)[0];
             for (let i of avaiablityArray) {
                 if (values['startTime'].format('HH:mm') === i.time) {
                     if (i.available === true) {

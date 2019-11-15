@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import { Menu } from 'antd';
-import { AuthConsumer } from '../context/AuthContext';
+import { connect } from 'react-redux';
+import { userActions } from '../_actions';
 
 // internal imports
 import RegisterModal from './RegisterModal';
 import LoginModal from './LoginModal';
+import '../styles/Header.scss';
 
-export default class Header extends Component {
+class Header extends Component {
     state = {
         registerModalVisible: false,
         loginModalVisible: false
@@ -41,39 +43,50 @@ export default class Header extends Component {
 
 
     render() {
+        console.log('this.props', this.props)
         return (
             <div>
-                <header>
-                    <AuthConsumer>
-                        {({ isAuthenticated, updateAuthState, logout }) => (
-                            <div>
-                                <div className="logo" >Ping Pong {isAuthenticated}</div>
-
-                                {isAuthenticated ? (
-                                    <Menu className="menu"
-                                        theme="dark"
-                                        mode="horizontal"
-                                        defaultSelectedKeys={['logout']}
-                                    >
-                                        <Menu.Item className="menu__item" key="logout" onClick={updateAuthState(false)}>Logout!</Menu.Item>
-                                    </Menu>
-                                ) : (
-                                        <Menu className="menu"
-                                            theme="dark"
-                                            mode="horizontal"
-                                            defaultSelectedKeys={['login']}
-                                        >
-                                            <Menu.Item className="menu__item" key="register" onClick={this.showRegisterModal}>Register</Menu.Item>
-                                            <Menu.Item className="menu__item" key="login" onClick={this.showLoginModal}>Login</Menu.Item>
-                                        </Menu>
-                                    )}
-                            </div>
-                        )}
-                    </AuthConsumer>
-                </header>
+                {this.props.loggedIn ?
+                    <header>
+                        <div className="logo" >Ping Pong</div>
+                        <Menu className="menu"
+                            theme="dark"
+                            mode="horizontal"
+                        >
+                            <Menu.Item className="menu__item" key="logout" onClick={this.props.logout}>Logout</Menu.Item>
+                        </Menu>
+                    </header> :
+                    <header>
+                        <div className="logo" >Ping Pong</div>
+                        <Menu className="menu"
+                            theme="dark"
+                            mode="horizontal"
+                            defaultSelectedKeys={['login']}
+                        >
+                            <Menu.Item className="menu__item" key="register" onClick={this.showRegisterModal}>Register</Menu.Item>
+                            <Menu.Item className="menu__item" key="login" onClick={this.showLoginModal}>Login</Menu.Item>
+                        </Menu>
+                    </header>
+                }
                 <RegisterModal registerModalVisible={this.state.registerModalVisible} hideRegisterModal={this.hideRegisterModal}></RegisterModal>
                 <LoginModal loginModalVisible={this.state.loginModalVisible} hideLoginModal={this.hideLoginModal}></LoginModal>
             </div>
         )
     }
 }
+
+
+function mapState(state) {
+    console.log('state', state);
+    const { loggedIn } = state.authentication;
+    return { loggedIn };
+}
+
+
+const actionCreators = {
+    logout: userActions.logout
+};
+
+const connectedHeader = connect(mapState, actionCreators)(Header);
+
+export default connectedHeader;

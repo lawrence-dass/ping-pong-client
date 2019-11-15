@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Modal, Form, Icon, Input, Button } from 'antd';
-import axios from 'axios';
+import { connect } from 'react-redux';
+
+import { userActions } from '../_actions';
 
 // to show field error and disable button
 function hasErrors(fieldsError) {
@@ -28,28 +30,28 @@ class RegisterModal extends Component {
 
     handleSubmitForRegister = e => {
         e.preventDefault();
-        this.props.form.validateFields((err, values) => {
+        this.props.form.validateFields((err, { name, email, password }) => {
             if (!err) {
-                console.log('Received values of form: ', values);
-                axios.post('http://localhost:8080/register', {
-                    "name": values.name,
-                    "email": values.email,
-                    "password": values.password,
-                })
-                    .then(res => {
-                        console.log(res);
-                        this.registerSuccess();
-                    })
-                    .catch(err => {
-                        if (err.response) {
+                this.props.register({ name, email, password })
+                // axios.post('http://localhost:8080/register', {
+                //     "name": values.name,
+                //     "email": values.email,
+                //     "password": values.password,
+                // })
+                //     .then(res => {
+                //         console.log(res);
+                //         this.registerSuccess();
+                //     })
+                //     .catch(err => {
+                //         if (err.response) {
 
-                            this.setState(() => {
-                                return { errors: [...err.response.data] }
-                            })
-                        }
+                //             this.setState(() => {
+                //                 return { errors: [...err.response.data] }
+                //             })
+                //         }
 
-                    })
-                console.log(this.state);
+                //     })
+                // console.log(this.state);
             }
             this.props.form.resetFields()
             this.props.hideRegisterModal(false);
@@ -154,4 +156,15 @@ class RegisterModal extends Component {
 
 const WrappedRegisterModal = Form.create({ name: 'normal_register' })(RegisterModal);
 
-export default WrappedRegisterModal;
+function mapState(state) {
+    const { registering } = state.registration;
+    return { registering };
+}
+
+const actionCreators = {
+    register: userActions.register
+}
+
+const connectedRegisterModa = connect(mapState, actionCreators)(WrappedRegisterModal);
+
+export default connectedRegisterModa;
