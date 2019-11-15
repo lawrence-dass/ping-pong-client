@@ -13,7 +13,7 @@ function register({ name, email, password }) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ name, email, password })
   };
-  console.log('requestOptions', requestOptions)
+
   return fetch(`http://localhost:8080/register`, requestOptions).then(handleResponse);
 }
 
@@ -39,10 +39,8 @@ function logout() {
 }
 
 function handleResponse(response) {
-  console.log('handleResponse t', response)
   return response.text().then(text => {
     const data = text && JSON.parse(text);
-    console.log('data', data)
     if (!response.ok) {
       if (response.status === 401) {
         // auto logout if 401 response returned from api

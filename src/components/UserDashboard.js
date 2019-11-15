@@ -1,42 +1,25 @@
 import React, { Component } from 'react';
 import { Layout, Button } from 'antd';
-import axios from 'axios';
+import { connect } from 'react-redux';
 
 // internal imports
-import './userDashboard.scss';
+import '../styles/UserDashboard.scss';
 import BookingModal from './BookingModal';
+import { bookingActions } from '../_actions';
+
 const { Footer } = Layout;
 
-
-
-
-export default class UserDashboard extends Component {
+class UserDashboard extends Component {
     state = {
         bookingModalVisible: false,
-        allBookings: []
     };
 
     componentDidMount() {
-        axios.get('http://localhost:8080/getBookings')
-            .then(res => {
-                console.log('res', res);
-                this.setState(() => {
-                    return { allBookings: res.data.result }
-                })
-            })
-            .catch(err => {
-                if (err.response) {
-                    console.log(err.response)
-                    this.setState(() => {
-                        return { errors: [...err.response.data] }
-                    })
-                }
-
-            })
+        // get all bookings to check the avaiable time slots
+        this.props.getAllBookings();
     }
 
     showBookingModal = () => {
-        console.log('showBookingModal t')
         this.setState({
             bookingModalVisible: true,
         });
@@ -46,16 +29,11 @@ export default class UserDashboard extends Component {
         this.setState({
             bookingModalVisible: value,
         });
-
     };
 
-
-
     render() {
-        console.log(this.state);
-        const bookingsList = this.state.allBookings.map((booking) => {
-            console.log(booking);
-            return <li key={booking.startTime}> Date: {booking.date}, Start Time: {booking.stateTime} , End Time: {booking.endTime} Duration: {booking.duration} </li>
+        const bookingsList = this.props.allBookings.bookings.map((booking) => {
+            return <li key={booking.startTime}> Date: {booking.date}, Start Time: {booking.startTime} , End Time: {booking.endTime} Duration: {booking.duration} </li>
         });
         return (
             <div>
@@ -76,3 +54,17 @@ export default class UserDashboard extends Component {
         )
     }
 }
+
+// map store bookings to component props
+function mapState(state) {
+    return { allBookings: state.bookings };
+}
+
+// action need to get all bookings
+const actionCreators = {
+    getAllBookings: bookingActions.getAllBookings,
+};
+
+const connectedUserDashboard = connect(mapState, actionCreators)(UserDashboard);
+
+export default connectedUserDashboard;

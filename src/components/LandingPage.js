@@ -21,7 +21,6 @@ export default class LandingPage extends Component {
     };
 
     showLoginModal = () => {
-        console.log('showLoginModal t')
         this.setState({
             loginModalVisible: true,
         });

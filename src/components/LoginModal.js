@@ -23,7 +23,6 @@ class LoginModal extends Component {
     }
 
     handleSubmitForLogin = e => {
-        console.log('handleSubmitForLogin t');
         e.preventDefault();
         this.props.form.validateFields((err, { username, password }) => {
             if (!err) {
@@ -110,15 +109,10 @@ class LoginModal extends Component {
 
 const WrappedLoginModal = Form.create({ name: 'normal_login' })(LoginModal);
 
-function mapState(state) {
-    const { loggingIn } = state.authentication;
-    return { loggingIn };
-}
-
 const actionCreators = {
     login: userActions.login,
     logout: userActions.logout
 };
 
-const connectedLoginModal = connect(mapState, actionCreators)(WrappedLoginModal);
+const connectedLoginModal = connect(null, actionCreators)(WrappedLoginModal);
 export default connectedLoginModal;

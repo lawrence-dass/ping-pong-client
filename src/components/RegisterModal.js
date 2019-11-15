@@ -60,7 +60,6 @@ class RegisterModal extends Component {
 
     onNameInputChange = e => {
         const { value } = e.target;
-        console.log(value)
         this.setState(() => {
             return { name: value }
         })
@@ -68,14 +67,12 @@ class RegisterModal extends Component {
 
     onEmailInputChange = e => {
         const { value } = e.target;
-        console.log(value)
         this.setState(() => {
             return { email: value }
         })
     }
     onPasswordInputChange = e => {
         const { value } = e.target;
-        console.log(value)
         this.setState(() => {
             return { password: value }
         })

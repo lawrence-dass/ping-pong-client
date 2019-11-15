@@ -2,8 +2,10 @@
 import React, { Component } from 'react';
 import { Modal, Form, Button, DatePicker, TimePicker, Slider, InputNumber, Row, Col } from 'antd';
 import { Scheduler } from '@ssense/sscheduler';
-import axios from 'axios';
 import * as moment from 'moment';
+import { connect } from 'react-redux';
+
+import { bookingActions } from '../_actions';
 
 const booking = new Scheduler();
 const { confirm } = Modal;
@@ -19,92 +21,70 @@ class BookingModal extends Component {
         bookedSlots: []
     };
 
-    componentDidMount() {
-        // To disabled submit button at the beginning.
-        this.props.form.validateFields();
-        axios.get('http://localhost:8080/getBookings')
-            .then(res => {
-                const bookedSlots = res.data.result.map((item) => {
-                    return { date: item.date, from: item.startTime, to: item.endTime };
-                })
-                this.setState(() => {
-                    return { allBookings: res.data.result, bookedSlots: bookedSlots };
-                })
-            })
-            .catch(err => {
-                if (err.response) {
-                    console.log(err.response)
-                    this.setState(() => {
-                        return { errors: [...err.response.data] }
-                    })
-                }
+    // componentDidMount() {
+    //     // To disabled submit button at the beginning.
+    //     this.props.form.validateFields();
+    //     axios.get('http://localhost:8080/getBookings')
+    //         .then(res => {
+    //             const bookedSlots = res.data.result.map((item) => {
+    //                 return { date: item.date, from: item.startTime, to: item.endTime };
+    //             })
+    //             this.setState(() => {
+    //                 return { allBookings: res.data.result, bookedSlots: bookedSlots };
+    //             })
+    //         })
+    //         .catch(err => {
+    //             if (err.response) {
+    //                 this.setState(() => {
+    //                     return { errors: [...err.response.data] }
+    //                 })
+    //             }
 
-            })
+    //         })
 
-        if (this.state.allBookings !== []) {
+    //     if (this.state.allBookings !== []) {
 
-        }
-
-
-    }
+    //     }
 
 
+    // }
 
-    handleSubmitForBooking = e => {
+
+
+    // handleSubmitForBooking = e => {
+    //     e.preventDefault();
+    //     this.props.form.validateFields((err, values) => {
+    //         if (!err) {
+    //             const payload = {
+    //                 userId: '12345',
+    //                 date: values['date'].format('YYYY-MM-DD'),
+    //                 startTime: values['startTime'].format('HH:mm'),
+    //                 endtime: values['startTime'].add(this.state.inputValue, 'minutes').format('HH:mm'),
+    //                 duration: this.state.inputValue,
+    //                 createAt: moment().format('LLLL')
+    //             }
+
+    //             // axios.post('http://localhost:8080/book', payload)
+    //             //     .then(res => {
+    //             //         console.log(res);
+    //             //     })
+    //             //     .catch(err => {
+    //             //         if (err.response) {
+    //             //             this.setState(() => {
+    //             //                 return { errors: [...err.response.data] }
+    //             //             })
+    //             //         }
+    //             //     })
+    //             // console.log(this.state);
+    //         }
+    //         this.props.form.resetFields()
+    //         this.props.hideBookingModal(false);
+    //     });
+    // };
+
+    checkBookingAvailability = e => {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
-            if (!err) {
-                const payload = {
-                    userId: '12345',
-                    date: values['date'].format('YYYY-MM-DD'),
-                    startTime: values['startTime'].format('HH:mm'),
-                    endtime: values['startTime'].add(this.state.inputValue, 'minutes').format('HH:mm'),
-                    duration: this.state.inputValue,
-                    createAt: moment().format('LLLL')
-                }
-
-                console.log('payload', payload);
-                axios.post('http://localhost:8080/book', payload)
-                    .then(res => {
-                        console.log(res);
-                    })
-                    .catch(err => {
-                        if (err.response) {
-                            console.log(err.response)
-                            this.setState(() => {
-                                return { errors: [...err.response.data] }
-                            })
-                        }
-
-                    })
-                console.log(this.state);
-            }
-            this.props.form.resetFields()
-            this.props.hideBookingModal(false);
-        });
-    };
-
-    checkBookingAvaiablity = e => {
-        console.log('checkBookingAvaiablity t');
-        e.preventDefault();
-        this.props.form.validateFields((err, values) => {
-            console.log('inside prop validation');
-            console.log('err', err, 'value', values)
-            console.log(typeof values['startTime'])
-            if (!err) {
-                let selectedTime = moment(values['startTime']);
-                const payload = {
-                    userId: '12345',
-                    date: values['date'].format('YYYY-MM-DD'),
-                    startTime: values['startTime'].format('HH:mm'),
-                    endtime: selectedTime.add(this.state.inputValue, 'minutes').format('HH:mm'),
-                    duration: this.state.inputValue,
-                    createAt: moment().format('LLLL')
-                }
-                console.log('payload', payload);
-            } else {
-                console.log(err);
-            }
             const availability = booking.getAvailability({
                 from: values['date'].format('YYYY-MM-DD'),
                 to: values['date'].add('days', 1).format('YYYY-MM-DD'),
@@ -124,7 +104,6 @@ class BookingModal extends Component {
             for (let i of avaiablityArray) {
                 if (values['startTime'].format('HH:mm') === i.time) {
                     if (i.available === true) {
-                        console.log('avaiable')
                         this.showConfirmBooking(this.props, this.state);
                         return true;
                     }
@@ -139,7 +118,6 @@ class BookingModal extends Component {
     }
 
     showConfirmBooking = () => {
-        console.log('should t showConfirmBooking');
         confirm({
             title: 'Nice, your selected time slot is avaiable!',
             content: 'Would like confirm your booking?',
@@ -148,7 +126,6 @@ class BookingModal extends Component {
                 this.props.form.validateFields((err, values) => {
                     if (!err) {
                         const selectedTime = moment(values['startTime']);
-                        console.log()
                         const payload = {
                             id: '12345',
                             date: values['date'].format('YYYY-MM-DD'),
@@ -157,29 +134,7 @@ class BookingModal extends Component {
                             duration: this.state.inputValue,
                             createdAt: moment().format('LLLL')
                         }
-
-                        console.log('payload', payload);
-                        axios.post('http://localhost:8080/book', payload)
-                            .then(res => {
-                                console.log('this.state.allBookings', this.state.allBooking);
-                                let updatedallBooking = [...this.state.allBookings];
-                                console.log('updatedallBooking before push', updatedallBooking);
-                                updatedallBooking.push(res.data.result);
-                                console.log('updatedallBooking', updatedallBooking);
-                                this.setState(() => {
-                                    console.log('called set state');
-                                    return { allBooking: updatedallBooking };
-                                })
-                            })
-                            .catch(err => {
-                                if (err.response) {
-                                    console.log(err.response)
-                                    this.setState(() => {
-                                        return { errors: [...err.response.data] }
-                                    })
-                                }
-
-                            })
+                        this.props.addBooking(payload);
                     }
                     this.props.form.resetFields()
                     this.props.hideBookingModal(false);
@@ -193,7 +148,6 @@ class BookingModal extends Component {
 
     onNameInputChange = e => {
         const { value } = e.target;
-        console.log(value)
         this.setState(() => {
             return { name: value }
         })
@@ -201,14 +155,12 @@ class BookingModal extends Component {
 
     onEmailInputChange = e => {
         const { value } = e.target;
-        console.log(value)
         this.setState(() => {
             return { email: value }
         })
     }
     onPasswordInputChange = e => {
         const { value } = e.target;
-        console.log(value)
         this.setState(() => {
             return { password: value }
         })
@@ -234,7 +186,6 @@ class BookingModal extends Component {
 
 
     render() {
-        console.log(this.props)
         const { inputValue } = this.state;
         const { bookingModalVisible } = this.props;
         const { getFieldDecorator, getFieldsError, isFieldTouched, getFieldError } = this.props.form;
@@ -265,7 +216,7 @@ class BookingModal extends Component {
                     footer={null}
                     style={{ top: 200 }}
                 >
-                    <Form {...formItemLayout} onSubmit={this.checkBookingAvaiablity}>
+                    <Form {...formItemLayout} onSubmit={this.checkBookingAvailability}>
                         <Form.Item label="Booking date" validateStatus={dateError ? 'error' : ''} help={dateError || ''}>
                             {getFieldDecorator('date', dateConfig)(<DatePicker />)}
                         </Form.Item>
@@ -311,4 +262,11 @@ class BookingModal extends Component {
 
 const WrappedBookingModal = Form.create({ name: 'normal_register' })(BookingModal);
 
-export default WrappedBookingModal;
+// action need to get all bookings
+const actionCreators = {
+    addBooking: bookingActions.addBooking,
+};
+
+const connectedBookingModal = connect(null, actionCreators)(WrappedBookingModal);
+
+export default connectedBookingModal;

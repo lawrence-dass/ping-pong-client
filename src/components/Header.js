@@ -21,7 +21,7 @@ class Header extends Component {
     };
 
     showLoginModal = () => {
-        console.log('showLoginModal t')
+
         this.setState({
             loginModalVisible: true,
         });
@@ -43,7 +43,6 @@ class Header extends Component {
 
 
     render() {
-        console.log('this.props', this.props)
         return (
             <div>
                 {this.props.loggedIn ?
@@ -77,7 +76,6 @@ class Header extends Component {
 
 
 function mapState(state) {
-    console.log('state', state);
     const { loggedIn } = state.authentication;
     return { loggedIn };
 }

@@ -12,7 +12,6 @@ export const userActions = {
 };
 
 function login(username, password) {
-  console.log('login action t', username, password)
   return dispatch => {
     dispatch(request({ username }));
 
@@ -40,7 +39,6 @@ function logout() {
 }
 
 function register(user) {
-  console.log('user on register', user);
   return dispatch => {
     dispatch(request(user));
 

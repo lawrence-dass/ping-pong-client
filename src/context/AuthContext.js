@@ -12,7 +12,6 @@ class AuthProvider extends React.Component {
   }
 
   updateAuthState(authState) {
-    console.log('updateAuthState t', authState)
     this.setState(() => {
       return { isAuthenticated: authState }
     })
