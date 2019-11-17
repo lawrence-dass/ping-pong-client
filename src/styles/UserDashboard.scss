@@ -20,3 +20,17 @@
   color: rgb(95, 95, 95) !important;
   background-color: rgba(0, 0, 0, 0.021) !important;
 }
+
+.dashboard__addBooking {
+  position: absolute !important;
+  top: 15.5%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 3.2rem;
+  padding: 0.7rem 2rem;
+  font-size: 1.2rem;
+}
+
+.noBooking {
+  text-align: center;
+}

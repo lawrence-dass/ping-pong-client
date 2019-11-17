@@ -50,12 +50,14 @@ class UserDashboard extends Component {
                 <Layout>
                     <section className="dashboard">
                         <div className="dashboard__bookings">
-                            <Button className="hero__ctaButton" type="primary" onClick={this.showBookingModal}> Make new booking</Button>
+                            <Button className="dashboard__addBooking" type="primary" onClick={this.showBookingModal}> Make new booking</Button>
                             <Collapse className="accordion" defaultActiveKey={["1"]} accordion>
                                 <Panel header="Current Bookings" key="1">
                                     <List>
                                         {currentBookings.length === 0 ?
-                                            <p> No Bookings </p>
+                                            <div className="noBooking">
+                                                <p> No Bookings </p>
+                                            </div>
                                             : currentBookings.map((booking) => {
                                                 return (<List.Item key={booking._id}>
                                                     <List.Item.Meta
@@ -70,7 +72,9 @@ class UserDashboard extends Component {
                                 <Panel header="History" key="2">
                                     <List>
                                         {pastBookings.length === 0 ?
-                                            <p> No History </p>
+                                            <div className="noBooking">
+                                                <p> No History </p>
+                                            </div>
                                             : pastBookings.map((booking) => {
                                                 return (<List.Item key={booking._id}>
                                                     <List.Item.Meta
