@@ -39,16 +39,12 @@ class UserDashboard extends Component {
 
     render() {
         const userId = localStorage.getItem('userId');
-        console.log(this.props.allBookings.bookings)
         const currentBookings = this.props.allBookings.bookings.filter(booking => {
             return userId === `"${booking.id}"` && moment(`${booking.date} ${booking.endTime}`).isAfter(moment.now());
         })
         const pastBookings = this.props.allBookings.bookings.filter(booking => {
             return userId === `"${booking.id}"` && moment(`${booking.date} ${booking.endTime}`).isBefore(moment.now());
         })
-        console.log(currentBookings, pastBookings);
-        console.log('currentBookings.length', currentBookings.length)
-        console.log('pastBookings.length', pastBookings.length)
         return (
             <div>
                 <Layout>
@@ -61,7 +57,6 @@ class UserDashboard extends Component {
                                         {currentBookings.length === 0 ?
                                             <p> No Bookings </p>
                                             : currentBookings.map((booking) => {
-                                                console.log('jjk')
                                                 return (<List.Item key={booking._id}>
                                                     <List.Item.Meta
                                                         title={`Date: ${booking.date}`}
