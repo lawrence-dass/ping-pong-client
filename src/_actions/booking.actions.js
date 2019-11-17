@@ -5,7 +5,8 @@ import { alertActions } from './';
 
 export const bookingActions = {
   getAllBookings,
-  addBooking
+  addBooking,
+  cancelBooking
 };
 
 // action to get all bookings
@@ -48,4 +49,27 @@ function addBooking(bookingDetails) {
   function request(bookingDetails) { return { type: bookingConstants.ADD_BOOKING_REQUEST, bookingDetails } }
   function success(bookingDetails) { return { type: bookingConstants.ADD_BOOKING_SUCCESS, bookingDetails } }
   function failure(error) { return { type: bookingConstants.ADD_BOOKING_FAILURE, error } }
+}
+
+// action for cancelling a booking
+function cancelBooking(bookingId) {
+  return dispatch => {
+    dispatch(request(bookingId));
+
+    bookingService.cancelBooking(bookingId)
+      .then(
+        bookings => {
+          dispatch(success(bookingId));
+          dispatch(alertActions.success('Booking Cancelled Successfully'));
+        },
+        error => {
+          dispatch(failure(error));
+          dispatch(alertActions.error(error));
+        }
+      );
+  };
+
+  function request(bookingId) { return { type: bookingConstants.CANCEL_BOOKING_REQUEST, bookingId } }
+  function success(bookingId) { return { type: bookingConstants.CANCEL_BOOKING_SUCCESS, bookingId } }
+  function failure(error) { return { type: bookingConstants.CANCEL_BOOKING_FAILURE, error } }
 }

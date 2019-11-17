@@ -1,9 +1,7 @@
-// import { authHeader } from '../_helpers';
-// import { history } from '../_helpers';
-
 export const bookingService = {
   getAllBookings,
-  addBooking
+  addBooking,
+  cancelBooking
 };
 
 function getAllBookings() {
@@ -22,7 +20,17 @@ function addBooking({ id, date, startTime, endTime, duration, createdAt }) {
     body: JSON.stringify({ id, date, startTime, endTime, duration, createdAt })
   };
 
-  return fetch(`http://localhost:8080/book`, requestOptions).then(handleResponse);
+  return fetch(`http://localhost:8080/booking`, requestOptions).then(handleResponse);
+}
+
+function cancelBooking(bookingId) {
+  const requestOptions = {
+    method: 'DELETE',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ bookingId })
+  };
+
+  return fetch(`http://localhost:8080/booking`, requestOptions).then(handleResponse);
 }
 
 

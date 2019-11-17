@@ -1,16 +1,17 @@
 import { userConstants } from '../_constants';
 
-export function users(state = {}, action) {
+export function user(state = {}, action) {
   switch (action.type) {
-    case userConstants.GETALL_REQUEST:
+    case userConstants.LOGIN_REQUEST:
       return {
         loading: true
       };
-    case userConstants.GETALL_SUCCESS:
+    case userConstants.LOGIN_SUCCESS:
+
       return {
-        items: action.users
+        userDetails: action.userInfo
       };
-    case userConstants.GETALL_FAILURE:
+    case userConstants.LOGIN_FAILURE:
       return {
         error: action.error
       };

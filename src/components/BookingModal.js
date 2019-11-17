@@ -21,67 +21,6 @@ class BookingModal extends Component {
         bookedSlots: []
     };
 
-    // componentDidMount() {
-    //     // To disabled submit button at the beginning.
-    //     this.props.form.validateFields();
-    //     axios.get('http://localhost:8080/getBookings')
-    //         .then(res => {
-    //             const bookedSlots = res.data.result.map((item) => {
-    //                 return { date: item.date, from: item.startTime, to: item.endTime };
-    //             })
-    //             this.setState(() => {
-    //                 return { allBookings: res.data.result, bookedSlots: bookedSlots };
-    //             })
-    //         })
-    //         .catch(err => {
-    //             if (err.response) {
-    //                 this.setState(() => {
-    //                     return { errors: [...err.response.data] }
-    //                 })
-    //             }
-
-    //         })
-
-    //     if (this.state.allBookings !== []) {
-
-    //     }
-
-
-    // }
-
-
-
-    // handleSubmitForBooking = e => {
-    //     e.preventDefault();
-    //     this.props.form.validateFields((err, values) => {
-    //         if (!err) {
-    //             const payload = {
-    //                 userId: '12345',
-    //                 date: values['date'].format('YYYY-MM-DD'),
-    //                 startTime: values['startTime'].format('HH:mm'),
-    //                 endtime: values['startTime'].add(this.state.inputValue, 'minutes').format('HH:mm'),
-    //                 duration: this.state.inputValue,
-    //                 createAt: moment().format('LLLL')
-    //             }
-
-    //             // axios.post('http://localhost:8080/book', payload)
-    //             //     .then(res => {
-    //             //         console.log(res);
-    //             //     })
-    //             //     .catch(err => {
-    //             //         if (err.response) {
-    //             //             this.setState(() => {
-    //             //                 return { errors: [...err.response.data] }
-    //             //             })
-    //             //         }
-    //             //     })
-    //             // console.log(this.state);
-    //         }
-    //         this.props.form.resetFields()
-    //         this.props.hideBookingModal(false);
-    //     });
-    // };
-
     checkBookingAvailability = e => {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
@@ -99,7 +38,6 @@ class BookingModal extends Component {
                     ]
                 }
             });
-            console.log('availability', availability);
             const avaiablityArray = availability !== {} && Object.values(availability)[0];
             for (let i of avaiablityArray) {
                 if (values['startTime'].format('HH:mm') === i.time) {

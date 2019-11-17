@@ -22,12 +22,20 @@ export function bookings(state = { loading: false, bookings: [] }, action) {
         bookings: [...state.bookings]
       }
     case bookingConstants.ADD_BOOKING_SUCCESS:
-      const { id, date, startTime, endTime, duration, createdAt } = action.bookingDetails;
-      const newBooking = { id, date, startTime, endTime, duration, createdAt };
-      const updatedBookings = [...state.bookings, newBooking];
+      const { _id, date, startTime, endTime, duration, createdAt } = action.bookingDetails;
+      const newBooking = { _id, date, startTime, endTime, duration, createdAt };
+      const updatedBookingsAddingBooking = [...state.bookings, newBooking];
       return {
         loading: false,
-        bookings: [...updatedBookings]
+        bookings: [...updatedBookingsAddingBooking]
+      }
+    case bookingConstants.CANCEL_BOOKING_SUCCESS:
+      const updatedBookingsAfterCancelling = state.bookings.filter((booking) => {
+        return booking._id !== action.bookingId;
+      })
+      return {
+        loading: false,
+        bookings: [...updatedBookingsAfterCancelling]
       }
     default:
       return state

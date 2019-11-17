@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { store } from './_helpers';
+import { store } from './_helpers/store';
 import { Provider } from 'react-redux';
 
 import './index.scss';

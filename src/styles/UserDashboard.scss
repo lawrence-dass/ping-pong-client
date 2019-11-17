@@ -6,3 +6,8 @@
 .dashboard {
   height: 100vh;
 }
+
+.ant-collapse-content-box {
+  max-height: 400px !important;
+  overflow: scroll;
+}

@@ -1,5 +1,6 @@
 // import { authHeader } from '../_helpers';
 import { history } from '../_helpers';
+import { persistor } from '../_helpers';
 
 export const userService = {
   login,
@@ -27,15 +28,19 @@ function login(name, password) {
 
   return fetch(`http://localhost:8080/login`, requestOptions)
     .then(handleResponse)
-    .then(user => {
-      localStorage.setItem('user', JSON.stringify(user.token));
-      return user.token;
+    .then(({ result }) => {
+      localStorage.setItem('userToken', JSON.stringify(result.token));
+      localStorage.setItem('userId', JSON.stringify(result.userId));
+      localStorage.setItem('username', JSON.stringify(result.username));
+      return result;
     });
 }
 
 function logout() {
-  localStorage.removeItem('user');
+  localStorage.removeItem('userToken');
+  localStorage.removeItem('userId');
   history.push('/');
+  persistor.purge();
 }
 
 function handleResponse(response) {

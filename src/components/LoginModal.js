@@ -13,7 +13,6 @@ React.createContext()
 class LoginModal extends Component {
     state = {
         name: '',
-        email: '',
         password: '',
     };
 
@@ -67,7 +66,7 @@ class LoginModal extends Component {
     render() {
         const { loginModalVisible } = this.props;
         const { getFieldDecorator, getFieldsError, isFieldTouched, getFieldError } = this.props.form;
-        const usernameError = isFieldTouched('name') && getFieldError('name');
+        const usernameError = isFieldTouched('username') && getFieldError('username');
         const passwordError = isFieldTouched('password') && getFieldError('password');
         return (
             <Modal

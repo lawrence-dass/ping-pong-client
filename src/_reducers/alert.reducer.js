@@ -1,6 +1,6 @@
 import { alertConstants } from '../_constants';
 
-export function alert(state = {}, action) {
+export function alert(state = { type: null }, action) {
   switch (action.type) {
     case alertConstants.SUCCESS:
       return {
