@@ -22,8 +22,8 @@ export function bookings(state = { loading: false, bookings: [] }, action) {
         bookings: [...state.bookings]
       }
     case bookingConstants.ADD_BOOKING_SUCCESS:
-      const { _id, date, startTime, endTime, duration, createdAt } = action.bookingDetails;
-      const newBooking = { _id, date, startTime, endTime, duration, createdAt };
+      const { _id, date, startTime, id, endTime, duration, createdAt } = action.bookingDetails;
+      const newBooking = { _id, id, date, startTime, endTime, duration, createdAt };
       const updatedBookingsAddingBooking = [...state.bookings, newBooking];
       return {
         loading: false,

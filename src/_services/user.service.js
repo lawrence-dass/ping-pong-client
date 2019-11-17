@@ -2,6 +2,8 @@
 import { history } from '../_helpers';
 import { persistor } from '../_helpers';
 
+const baseAPI = "https://infinite-savannah-30830.herokuapp.com";
+
 export const userService = {
   login,
   logout,
@@ -15,7 +17,7 @@ function register({ name, email, password }) {
     body: JSON.stringify({ name, email, password })
   };
 
-  return fetch(`http://localhost:8080/register`, requestOptions).then(handleResponse);
+  return fetch(`${baseAPI}/register`, requestOptions).then(handleResponse);
 }
 
 
@@ -26,7 +28,7 @@ function login(name, password) {
     body: JSON.stringify({ name, password })
   };
 
-  return fetch(`http://localhost:8080/login`, requestOptions)
+  return fetch(`${baseAPI}/login`, requestOptions)
     .then(handleResponse)
     .then(({ result }) => {
       localStorage.setItem('userToken', JSON.stringify(result.token));

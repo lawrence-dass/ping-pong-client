@@ -4,13 +4,15 @@ export const bookingService = {
   cancelBooking
 };
 
+const baseAPI = "https://infinite-savannah-30830.herokuapp.com";
+
 function getAllBookings() {
   const requestOptions = {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' }
   };
 
-  return fetch(`http://localhost:8080/getBookings`, requestOptions).then(handleResponse);
+  return fetch(`${baseAPI}/getBookings`, requestOptions).then(handleResponse);
 }
 
 function addBooking({ id, date, startTime, endTime, duration, createdAt }) {
@@ -20,7 +22,7 @@ function addBooking({ id, date, startTime, endTime, duration, createdAt }) {
     body: JSON.stringify({ id, date, startTime, endTime, duration, createdAt })
   };
 
-  return fetch(`http://localhost:8080/booking`, requestOptions).then(handleResponse);
+  return fetch(`${baseAPI}/booking`, requestOptions).then(handleResponse);
 }
 
 function cancelBooking(bookingId) {
@@ -30,7 +32,7 @@ function cancelBooking(bookingId) {
     body: JSON.stringify({ bookingId })
   };
 
-  return fetch(`http://localhost:8080/booking`, requestOptions).then(handleResponse);
+  return fetch(`${baseAPI}/booking`, requestOptions).then(handleResponse);
 }
 
 

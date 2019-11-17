@@ -1,5 +1,5 @@
 .dashboard__bookings {
-  margin: 10rem auto;
+  margin: 10rem auto 0 auto;
   width: 60%;
 }
 
@@ -10,4 +10,13 @@
 .ant-collapse-content-box {
   max-height: 400px !important;
   overflow: scroll;
+}
+
+.dashboard__footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  font-size: 1.1rem !important;
+  color: rgb(95, 95, 95) !important;
+  background-color: rgba(0, 0, 0, 0.021) !important;
 }

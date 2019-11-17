@@ -38,49 +38,59 @@ class UserDashboard extends Component {
     };
 
     render() {
+        const userId = localStorage.getItem('userId');
+        console.log(this.props.allBookings.bookings)
         const currentBookings = this.props.allBookings.bookings.filter(booking => {
-            return moment(`${booking.date} ${booking.endTime}`).isAfter(moment.now());
+            return userId === `"${booking.id}"` && moment(`${booking.date} ${booking.endTime}`).isAfter(moment.now());
         })
         const pastBookings = this.props.allBookings.bookings.filter(booking => {
-            return moment(`${booking.date} ${booking.endTime}`).isBefore(moment.now());
+            return userId === `"${booking.id}"` && moment(`${booking.date} ${booking.endTime}`).isBefore(moment.now());
         })
+        console.log(currentBookings, pastBookings);
+        console.log('currentBookings.length', currentBookings.length)
+        console.log('pastBookings.length', pastBookings.length)
         return (
             <div>
                 <Layout>
                     <section className="dashboard">
                         <div className="dashboard__bookings">
                             <Button className="hero__ctaButton" type="primary" onClick={this.showBookingModal}> Make new booking</Button>
-                            <Collapse defaultActiveKey={["1"]} accordion>
+                            <Collapse className="accordion" defaultActiveKey={["1"]} accordion>
                                 <Panel header="Current Bookings" key="1">
                                     <List>
-                                        {currentBookings.map((booking) => {
-                                            return (<List.Item key={booking._id}>
-                                                <List.Item.Meta
-                                                    title={`Date: ${booking.date}`}
-                                                    description={`Slot: ${booking.startTime} - ${booking.endTime}, Duration: ${booking.duration} mins`}
-                                                />
-                                                <Button type="danger" onClick={() => this.cancelBooking(booking._id)}>Delete</Button>
-                                            </List.Item >)
-                                        })}
+                                        {currentBookings.length === 0 ?
+                                            <p> No Bookings </p>
+                                            : currentBookings.map((booking) => {
+                                                console.log('jjk')
+                                                return (<List.Item key={booking._id}>
+                                                    <List.Item.Meta
+                                                        title={`Date: ${booking.date}`}
+                                                        description={`Slot: ${booking.startTime} - ${booking.endTime}, Duration: ${booking.duration} mins`}
+                                                    />
+                                                    <Button type="danger" onClick={() => this.cancelBooking(booking._id)}>Delete</Button>
+                                                </List.Item >)
+                                            })}
                                     </List>
                                 </Panel>
                                 <Panel header="History" key="2">
                                     <List>
-                                        {pastBookings.map((booking) => {
-                                            return (<List.Item key={booking._id}>
-                                                <List.Item.Meta
-                                                    title={`Date: ${booking.date}`}
-                                                    description={`Slot: ${booking.startTime} - ${booking.endTime}, Duration: ${booking.duration} mins`}
-                                                />
-                                            </List.Item >)
-                                        })}
+                                        {pastBookings.length === 0 ?
+                                            <p> No History </p>
+                                            : pastBookings.map((booking) => {
+                                                return (<List.Item key={booking._id}>
+                                                    <List.Item.Meta
+                                                        title={`Date: ${booking.date}`}
+                                                        description={`Slot: ${booking.startTime} - ${booking.endTime}, Duration: ${booking.duration} mins`}
+                                                    />
+                                                </List.Item >)
+                                            })}
                                     </List>
                                 </Panel>
                             </Collapse>
                         </div>
 
                     </section>
-                    <Footer className='footer'> @Copyright Ping Pong LLC</Footer>
+                    <Footer className='dashboard__footer'> @Copyright Ping Pong LLC</Footer>
                     <BookingModal bookingModalVisible={this.state.bookingModalVisible} hideBookingModal={this.hideBookingModal}></BookingModal>
                 </Layout>
             </div >
@@ -90,7 +100,10 @@ class UserDashboard extends Component {
 
 // map store bookings to component props
 function mapState(state) {
-    return { allBookings: state.bookings };
+    return {
+        allBookings: state.bookings,
+        user: state.user
+    };
 }
 
 // action need to get all bookings

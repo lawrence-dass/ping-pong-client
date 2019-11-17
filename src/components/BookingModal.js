@@ -23,29 +23,46 @@ class BookingModal extends Component {
 
     checkBookingAvailability = e => {
         e.preventDefault();
+        // all the booked slots
+        const allBookedSlot = this.props.allBookings.bookings.map(booking => {
+            return { date: booking.date, from: booking.startTime, to: booking.endTime }
+        });
+
+        // avoid booking 60 mins before or after on already booked slot by individual user
+        const myBookedSlotsPlusBuffer = [];
+        this.props.allBookings.bookings.forEach(booking => {
+            const userId = localStorage.getItem('userId');
+            const sixtyMinsBeforeStartTime = moment(`${booking.date}, ${booking.startTime}`).subtract('60', 'minutes').format('HH:mm');
+            const sixtyMinsAfterEndTime = moment(`${booking.date}, ${booking.startTime}`).add('60', 'minutes').format('HH:mm');
+            if (userId === `"${booking.id}"`) {
+                myBookedSlotsPlusBuffer.push({ date: booking.date, from: sixtyMinsBeforeStartTime, to: sixtyMinsAfterEndTime })
+            }
+        });
+
         this.props.form.validateFields((err, values) => {
+            const selectedDate = moment(values['date']);
             const availability = booking.getAvailability({
                 from: values['date'].format('YYYY-MM-DD'),
-                to: values['date'].add('days', 1).format('YYYY-MM-DD'),
+                to: selectedDate.add('days', 1).format('YYYY-MM-DD'),
                 duration: parseInt(this.state.inputValue),
                 interval: parseInt(this.state.inputValue),
                 schedule: {
                     weekdays: {
                         from: values['startTime'].format('HH:mm'), to: '23:00'
                     },
-                    unavailability: this.state.bookedSlots,
+                    unavailability: [...allBookedSlot, ...myBookedSlotsPlusBuffer],
                     allocated: [
                     ]
                 }
             });
-            const avaiablityArray = availability !== {} && Object.values(availability)[0];
-            for (let i of avaiablityArray) {
+            const availabilityArray = availability !== {} && Object.values(availability)[0];
+            for (let i of availabilityArray) {
                 if (values['startTime'].format('HH:mm') === i.time) {
                     if (i.available === true) {
                         this.showConfirmBooking(this.props, this.state);
                         return true;
                     }
-                    console.log('unavailable');
+                    this.noSlotAvaiable();
                     return false;
                 }
                 return false;
@@ -65,7 +82,7 @@ class BookingModal extends Component {
                     if (!err) {
                         const selectedTime = moment(values['startTime']);
                         const payload = {
-                            id: '12345',
+                            id: this.props.user.userDetails.userId,
                             date: values['date'].format('YYYY-MM-DD'),
                             startTime: values['startTime'].format('HH:mm'),
                             endTime: selectedTime.add(this.state.inputValue, 'minutes').format('HH:mm'),
@@ -79,9 +96,16 @@ class BookingModal extends Component {
                 })
             },
             onCancel() {
-                console.log('Cancel');
+                // do nothing
             },
         }).apply(this);
+    }
+
+    noSlotAvaiable = () => {
+        Modal.error({
+            title: 'Oops',
+            content: 'Your selected slot is not avaiable, please try different time slots',
+        });
     }
 
     onNameInputChange = e => {
@@ -200,11 +224,18 @@ class BookingModal extends Component {
 
 const WrappedBookingModal = Form.create({ name: 'normal_register' })(BookingModal);
 
+function mapState(state) {
+    return {
+        allBookings: state.bookings,
+        user: state.user
+    };
+}
+
 // action need to get all bookings
 const actionCreators = {
     addBooking: bookingActions.addBooking,
 };
 
-const connectedBookingModal = connect(null, actionCreators)(WrappedBookingModal);
+const connectedBookingModal = connect(mapState, actionCreators)(WrappedBookingModal);
 
 export default connectedBookingModal;
