@@ -6,7 +6,8 @@ import { alertActions } from './';
 export const bookingActions = {
   getAllBookings,
   addBooking,
-  cancelBooking
+  cancelBooking,
+  startModifyingBooking
 };
 
 // action to get all bookings
@@ -68,8 +69,20 @@ function cancelBooking(bookingId) {
         }
       );
   };
+  
 
   function request(bookingId) { return { type: bookingConstants.CANCEL_BOOKING_REQUEST, bookingId } }
   function success(bookingId) { return { type: bookingConstants.CANCEL_BOOKING_SUCCESS, bookingId } }
   function failure(error) { return { type: bookingConstants.CANCEL_BOOKING_FAILURE, error } }
+}
+
+
+// action for start modifying a booking
+function startModifyingBooking(bookingId) {
+  return dispatch => {
+    dispatch(request(bookingId));
+  };
+  
+
+  function request(bookingId) { return { type: bookingConstants.START_MODIFYING_BOOKING_REQUEST, bookingId } }
 }

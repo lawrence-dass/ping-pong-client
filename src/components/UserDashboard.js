@@ -25,6 +25,14 @@ class UserDashboard extends Component {
         this.props.cancelBooking(bookingId);
     }
 
+    startModifyingBooking(bookingId) {
+        console.log(bookingId);
+        this.setState(() => {
+            return { bookingModalVisible : true };
+        })
+        this.props.startModifyingBooking();
+    }
+
     showBookingModal = () => {
         this.setState({
             bookingModalVisible: true,
@@ -64,6 +72,7 @@ class UserDashboard extends Component {
                                                         title={`Date: ${booking.date}`}
                                                         description={`Slot: ${booking.startTime} - ${booking.endTime}, Duration: ${booking.duration} mins`}
                                                     />
+                                                    <Button className="dashboard__bookings-editbutton" onClick={() => this.startModifyingBooking(booking._id)}>Edit</Button>
                                                     <Button type="danger" onClick={() => this.cancelBooking(booking._id)}>Delete</Button>
                                                 </List.Item >)
                                             })}
@@ -108,7 +117,8 @@ function mapState(state) {
 // action need to get all bookings
 const actionCreators = {
     getAllBookings: bookingActions.getAllBookings,
-    cancelBooking: bookingActions.cancelBooking
+    cancelBooking: bookingActions.cancelBooking,
+    startModifyingBooking: bookingActions.startModifyingBooking
 };
 
 const connectedUserDashboard = connect(mapState, actionCreators)(UserDashboard);
