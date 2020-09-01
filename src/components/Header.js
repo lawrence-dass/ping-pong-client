@@ -43,8 +43,8 @@ class Header extends Component {
 
   render() {
     const logo_icon = {
-      width: '40px',
-      height: '40px',
+      width: '35px',
+      height: '35px',
       marginRight: '10px',
       display: 'inline-block'
     };
