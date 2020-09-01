@@ -135,7 +135,10 @@ class LoginModal extends Component {
           </Button>
           <p style={{ marginTop: '15px' }}>
             Click{' '}
-            <span style={{ color: 'blue' }} onClick={this.demoLogin}>
+            <span
+              style={{ color: 'blue', cursor: 'pointer' }}
+              onClick={this.demoLogin}
+            >
               here
             </span>{' '}
             for demo login or create new user by registering.
