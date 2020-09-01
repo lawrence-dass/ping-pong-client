@@ -4,7 +4,7 @@ export const bookingService = {
   cancelBooking
 };
 
-const baseAPI = "https://infinite-savannah-30830.herokuapp.com";
+const baseAPI = 'https://infinite-savannah-30830.herokuapp.com';
 
 function getAllBookings() {
   const requestOptions = {
@@ -34,9 +34,6 @@ function cancelBooking(bookingId) {
 
   return fetch(`${baseAPI}/booking`, requestOptions).then(handleResponse);
 }
-
-
-
 
 function handleResponse(response) {
   return response.text().then(text => {

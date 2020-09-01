@@ -3,7 +3,7 @@ export function authHeader() {
   let user = JSON.parse(localStorage.getItem('user'));
   // if user stored in local storage, return for API call header when needed
   if (user && user.token) {
-    return { 'Authorization': 'Bearer ' + user.token };
+    return { Authorization: 'Bearer ' + user.token };
   } else {
     return {};
   }

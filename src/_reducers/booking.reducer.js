@@ -1,6 +1,9 @@
 import { bookingConstants } from '../_constants';
 
-export function bookings(state = { isEditing: false, loading: false, bookings: [] }, action) {
+export function bookings(
+  state = { isEditing: false, loading: false, bookings: [] },
+  action
+) {
   switch (action.type) {
     case bookingConstants.GET_ALLBOOKINGS_REQUEST:
       return {
@@ -23,34 +26,50 @@ export function bookings(state = { isEditing: false, loading: false, bookings: [
         loading: true,
         isEditing: false,
         bookings: [...state.bookings]
-      }
+      };
     case bookingConstants.ADD_BOOKING_SUCCESS:
-      const { _id, date, startTime, id, endTime, duration, createdAt } = action.bookingDetails;
-      const newBooking = { _id, id, date, startTime, endTime, duration, createdAt };
+      const {
+        _id,
+        date,
+        startTime,
+        id,
+        endTime,
+        duration,
+        createdAt
+      } = action.bookingDetails;
+      const newBooking = {
+        _id,
+        id,
+        date,
+        startTime,
+        endTime,
+        duration,
+        createdAt
+      };
       const updatedBookingsAddingBooking = [...state.bookings, newBooking];
       return {
         loading: false,
         isEditing: false,
         bookings: [...updatedBookingsAddingBooking]
-      }
+      };
 
     case bookingConstants.START_MODIFYING_BOOKING_REQUEST:
-        return {
-          loading: false,
-          isEditing: true,
-          bookings: [...state.bookings]
-        }
+      return {
+        loading: false,
+        isEditing: true,
+        bookings: [...state.bookings]
+      };
 
     case bookingConstants.CANCEL_BOOKING_SUCCESS:
-      const updatedBookingsAfterCancelling = state.bookings.filter((booking) => {
+      const updatedBookingsAfterCancelling = state.bookings.filter(booking => {
         return booking._id !== action.bookingId;
-      })
+      });
       return {
         loading: false,
         isEditing: false,
         bookings: [...updatedBookingsAfterCancelling]
-      }
+      };
     default:
-      return state
+      return state;
   }
 }

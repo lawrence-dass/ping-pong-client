@@ -2,7 +2,7 @@
 import { history } from '../_helpers';
 import { persistor } from '../_helpers';
 
-const baseAPI = "https://infinite-savannah-30830.herokuapp.com";
+const baseAPI = 'https://infinite-savannah-30830.herokuapp.com';
 
 export const userService = {
   login,
@@ -19,7 +19,6 @@ function register({ name, email, password }) {
 
   return fetch(`${baseAPI}/register`, requestOptions).then(handleResponse);
 }
-
 
 function login(name, password) {
   const requestOptions = {
@@ -54,10 +53,11 @@ function handleResponse(response) {
         logout();
       }
 
+      console.log('data', data);
       const error = (data && data.message) || response.statusText;
       return Promise.reject(error);
     }
-
+    console.log('datadatadatadatadatadatadata', data);
     return data;
   });
 }

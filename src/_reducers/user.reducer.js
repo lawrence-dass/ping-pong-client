@@ -1,13 +1,13 @@
 import { userConstants } from '../_constants';
 
 export function user(state = {}, action) {
+  console.log('action in user', action);
   switch (action.type) {
     case userConstants.LOGIN_REQUEST:
       return {
         loading: true
       };
     case userConstants.LOGIN_SUCCESS:
-
       return {
         userDetails: action.userInfo
       };
@@ -20,9 +20,7 @@ export function user(state = {}, action) {
       return {
         ...state,
         items: state.items.map(user =>
-          user.id === action.id
-            ? { ...user, deleting: true }
-            : user
+          user.id === action.id ? { ...user, deleting: true } : user
         )
       };
     case userConstants.DELETE_SUCCESS:
@@ -31,7 +29,7 @@ export function user(state = {}, action) {
         items: state.items.filter(user => user.id !== action.id)
       };
     case userConstants.DELETE_FAILURE:
-      // remove 'deleting:true' property and add 'deleteError:[error]' property to user 
+      // remove 'deleting:true' property and add 'deleteError:[error]' property to user
       return {
         ...state,
         items: state.items.map(user => {
@@ -46,6 +44,6 @@ export function user(state = {}, action) {
         })
       };
     default:
-      return state
+      return state;
   }
 }

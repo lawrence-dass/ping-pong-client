@@ -28,10 +28,10 @@ header {
   height: 100vh;
   background-image: linear-gradient(
       to right bottom,
-      rgba(#181818, 0.6),
-      rgba(#181818, 0.6)
+      rgba(#181818, 0.7),
+      rgba(#181818, 0.9)
     ),
-    url(../assets/landing-bg-image.jpg);
+    url(../assets/bg.webp);
   &__ctaButton {
     position: absolute;
     top: 47.5%;

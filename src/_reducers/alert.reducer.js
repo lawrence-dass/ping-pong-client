@@ -1,6 +1,7 @@
 import { alertConstants } from '../_constants';
 
 export function alert(state = { type: null }, action) {
+  console.log('action in alert reducer', action);
   switch (action.type) {
     case alertConstants.SUCCESS:
       return {
@@ -15,6 +16,6 @@ export function alert(state = { type: null }, action) {
     case alertConstants.CLEAR:
       return {};
     default:
-      return state
+      return state;
   }
 }
